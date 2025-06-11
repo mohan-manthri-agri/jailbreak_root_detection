@@ -62,38 +62,38 @@ class JailbreakRootDetection {
   static JailbreakRootDetection get instance => _instance;
 
   Future<List<JailbreakIssue>> get checkForIssues async {
-    final issues =
-        await methodChannel.invokeMethod<List<dynamic>>('checkForIssues');
+    final issues = await methodChannel.invokeMethod<List<dynamic>>('checkForIssues');
 
-    return issues?.map((e) => JailbreakIssue.fromString(e ?? '')).toList() ??
-        [];
+    return issues?.map((e) => JailbreakIssue.fromString(e ?? '')).toList() ?? [];
+  }
+
+  /// Support iOS and Android.
+  /// This method allows you to turn off the proxy check,
+  /// which might result in false positives on some devices.
+  Future<bool> jailbroken({bool shouldCheckProxy = false}) async {
+    return await methodChannel.invokeMethod('isJailbroken', {
+      'shouldCheckProxy': shouldCheckProxy,
+    });
   }
 
   /// Support iOS and Android
-  Future<bool> get isJailBroken async =>
-      await methodChannel.invokeMethod<bool>('isJailBroken') ?? false;
+  Future<bool> get isJailBroken async => await methodChannel.invokeMethod<bool>('isJailBroken') ?? false;
 
   /// Support iOS and Android
-  Future<bool> get isRealDevice async =>
-      await methodChannel.invokeMethod<bool>('isRealDevice') ?? false;
+  Future<bool> get isRealDevice async => await methodChannel.invokeMethod<bool>('isRealDevice') ?? false;
 
   /// Support Android
-  Future<bool> get isDevMode async =>
-      await methodChannel.invokeMethod<bool>('isDevMode') ?? false;
+  Future<bool> get isDevMode async => await methodChannel.invokeMethod<bool>('isDevMode') ?? false;
 
   /// Support iOS and Android
-  Future<bool> get isDebugged async =>
-      await methodChannel.invokeMethod<bool>('isDebugged') ?? false;
+  Future<bool> get isDebugged async => await methodChannel.invokeMethod<bool>('isDebugged') ?? false;
 
   /// Support iOS only
   Future<bool> isTampered(String bundleId) async =>
-      await methodChannel
-          .invokeMethod<bool>('isTampered', {'bundleId': bundleId}) ??
-      false;
+      await methodChannel.invokeMethod<bool>('isTampered', {'bundleId': bundleId}) ?? false;
 
   /// Support Android only
-  Future<bool> get isOnExternalStorage async =>
-      await methodChannel.invokeMethod<bool>('isOnExternalStorage') ?? false;
+  Future<bool> get isOnExternalStorage async => await methodChannel.invokeMethod<bool>('isOnExternalStorage') ?? false;
 
   /// Support iOS and Android
   Future<bool> get isNotTrust async {
