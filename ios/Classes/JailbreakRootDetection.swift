@@ -10,7 +10,7 @@ import IOSSecuritySuite
 
 class JailbreakRootDetection {
     
-    func checkJailBroken() -> Bool {
+    func checkJailBroken(shouldCheckProxy: Bool = true) -> Bool {
         let isJailBroken = UIDevice.current.isJailBroken
         let amJailbroken = IOSSecuritySuite.amIJailbroken()
         let amReverseEngineered = ReverseEngineeringChecker.amIReverseEngineered()
@@ -18,14 +18,19 @@ class JailbreakRootDetection {
         let fridaFound = FridaChecker.isFound()
         let cydiaFound = CydiaChecker.isFound()
         
-        return isJailBroken
+        let result = isJailBroken
         || amJailbroken
         || amReverseEngineered
-        || amProxied
         || fridaFound
         || cydiaFound
+        
+        if(shouldCheckProxy && amProxied){
+            return true
+        }
+        
+        return result
     }
-
+    
     func checkJail() -> Bool {
         let isJailBroken = UIDevice.current.isJailBroken
         let amJailbroken = IOSSecuritySuite.amIJailbroken()
@@ -33,23 +38,23 @@ class JailbreakRootDetection {
         return isJailBroken
         || amJailbroken
     }
-
+    
     func checkDebugged() -> Bool {
         return IOSSecuritySuite.amIDebugged()
     }
-
+    
     func checkReverseEngineered() -> Bool {
         return ReverseEngineeringChecker.amIReverseEngineered()
     }
-
+    
     func checkProxied() -> Bool {
         return IOSSecuritySuite.amIProxied()
     }
-
+    
     func checkFrida() -> Bool {
         return FridaChecker.isFound()
     }
-
+    
     func checkCydia() -> Bool {
         return CydiaChecker.isFound()
     }

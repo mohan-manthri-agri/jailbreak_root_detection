@@ -55,7 +55,12 @@ public class SwiftJailbreakRootDetectionPlugin: NSObject, FlutterPlugin {
             result(issues)
             break
         case "isJailBroken":
-            result(self.jailbreakRootDetection?.checkJailBroken())
+            guard let arguments = call.arguments as? [String: Any],
+                  let firstArgument = arguments.first,
+                  let shouldCheckProxy = firstArgument["shouldCheckProxy"] as? Bool else {
+                result(self.jailbreakRootDetection?.checkJailBroken())
+            }
+            result(self.jailbreakRootDetection?.checkJailBroken(shouldCheckProxy))
             break
         case "isRealDevice":
             result(self.jailbreakRootDetection?.checkRealDevice())
